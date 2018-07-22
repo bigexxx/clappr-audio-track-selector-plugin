@@ -1,6 +1,7 @@
 .audio_track_selector[data-audio-track-selector] {
 	float: right;
 	position: relative;
+	height: 100%;
 
 	.level_head {
 		height: 100%;
@@ -17,7 +18,7 @@
 		color: #fff;
 		-webkit-font-smoothing: antialiased;
 		border: none;
-		font-size: 17px;
+		font-size: 15px;
 		height: 100%;
 		text-transform: uppercase;
 
