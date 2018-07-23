@@ -53,6 +53,14 @@ export default class AudioTrackSelector extends UICorePlugin {
 		Clappr.Log.warn.apply(Clappr.Log, args);
 	}
 
+	info() {
+		const args = Array.prototype.slice.call(arguments);
+		args.unshift(this.name);
+
+		// noinspection ES6ModulesDependencies
+		Clappr.Log.info.apply(Clappr.Log, args);
+	}
+
 	bindEvents() {
 		this.debug('bindEvents');
 		this.listenTo(this.core, Events.CORE_READY, this.bindPlaybackEvents);
@@ -132,18 +140,27 @@ export default class AudioTrackSelector extends UICorePlugin {
 	}
 
 	fillLevels() {
-		this.debug('fillLevels');
+		this.warn('fillLevels');
 
 		this.audiotrack = [];
+		const currentPlayback = this.core.getCurrentPlayback();
+		if(currentPlayback === undefined) {
+			this.warn('this.core.getCurrentPlayback() === undefined');
+			return;
+		}
+		if(currentPlayback._hls === undefined) {
+			this.warn('this.core.getCurrentPlayback()._hls === undefined');
+			return;
+		}
 
-		if(this.core.getCurrentPlayback()._hls.audioTracks === undefined) {
+		if(currentPlayback._hls.audioTracks === undefined) {
 			this.warn('this.core.getCurrentPlayback()._hls.audioTracks === undefined');
 		}
-		else if(this.core.getCurrentPlayback()._hls.audioTracks.length === 0) {
+		else if(currentPlayback._hls.audioTracks.length === 0) {
 			this.warn('this.core.getCurrentPlayback()._hls.audioTracks.length === 0');
 		}
 		else {
-			this.audiotrack = this.core.getCurrentPlayback()._hls.audioTracks;
+			this.audiotrack = currentPlayback._hls.audioTracks;
 		}
 
 		this.debug('start filling in audio tracks');
@@ -159,15 +176,15 @@ export default class AudioTrackSelector extends UICorePlugin {
 			this.debug(x);
 
 			// noinspection EqualityComparisonWithCoercionJS
-			if(this.audiotrack[x].groupId == this.core.getCurrentPlayback()._hls.streamController.levels[+this.core.getCurrentPlayback()._hls.streamController.level].attrs.AUDIO) {
-				this.debug('a group match, selecting default(' + this.audiotrack[x].groupId + ')(' + this.core.getCurrentPlayback()._hls.streamController.levels[+this.core.getCurrentPlayback()._hls.streamController.level].attrs.AUDIO + ')');
+			if(this.audiotrack[x].groupId == currentPlayback._hls.streamController.levels[+currentPlayback._hls.streamController.level].attrs.AUDIO) {
+				this.debug('a group match, selecting default(' + this.audiotrack[x].groupId + ')(' + currentPlayback._hls.streamController.levels[+currentPlayback._hls.streamController.level].attrs.AUDIO + ')');
 				if(this.audiotrack[x].default === true) {
 					this.debug('selecting');
 					this.debug(this.audiotrack[x]);
 					this.selectedLevelId = x;
 
 					this.currentLevel = this.audiotrack[this.selectedLevelId];
-					this.core.getCurrentPlayback()._hls.audioTrack = this.selectedLevelId;
+					currentPlayback._hls.audioTrack = this.selectedLevelId;
 					this.highlightCurrentLevel();
 				}
 			}
@@ -177,7 +194,7 @@ export default class AudioTrackSelector extends UICorePlugin {
 		//
 		this.render();
 
-		let group = this.core.getCurrentPlayback()._hls.streamController.levels[this.core.getCurrentPlayback()._hls.streamController.level].attrs.AUDIO;
+		let group = currentPlayback._hls.streamController.levels[currentPlayback._hls.streamController.level].attrs.AUDIO;
 		this.agroupElement().addClass('hidden');
 		this.$('.audio_track_selector ul a[data-level-group-selector-select="' + group + '"]').parent().removeClass('hidden');
 	}
