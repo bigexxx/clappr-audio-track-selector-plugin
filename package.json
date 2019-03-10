@@ -1,5 +1,5 @@
 {
-  "name": "audio-track-selector",
+  "name": "clappr-audio-track-selector",
   "description": "A simple plugin for Clappr that adds support to manually select audio track on multi-audio streams.",
   "version": "0.1.12",
   "license": "MIT",
