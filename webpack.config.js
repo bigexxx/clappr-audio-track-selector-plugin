@@ -47,7 +47,7 @@ module.exports = {
 	output   : {
 		path         : path.resolve(__dirname, 'dist'),
 		publicPath   : '<%=baseUrl%>/',
-		filename     : 'audio-track-selector.js',
+		filename     : 'clappr-audio-track-selector.js',
 		library      : 'AudioTrackSelector',
 		libraryTarget: 'umd',
 	},

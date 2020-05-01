@@ -3,9 +3,9 @@
   "description": "A simple plugin for Clappr that adds support to manually select audio track on multi-audio streams.",
   "version": "0.1.12",
   "license": "MIT",
-  "main": "dist/audio-track-selector.js",
+  "main": "dist/clappr-audio-track-selector.js",
   "scripts": {
-    "release": "node_modules/.bin/webpack --p --output-filename audio-track-selector.min.js",
+    "release": "npm run build && node_modules/.bin/webpack --progress -p --output-filename clappr-audio-track-selector.min.js",
     "build": "node_modules/.bin/webpack --progress",
     "watch": "node_modules/.bin/webpack --progress --watch",
     "test": "karma start --single-run --browsers Chrome",
@@ -32,6 +32,7 @@
     "plugin"
   ],
   "dependencies": {
+    "autoprefixer": "^9.7.6",
     "clappr-zepto": "latest"
   },
   "devDependencies": {
